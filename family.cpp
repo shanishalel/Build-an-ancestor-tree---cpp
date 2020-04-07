@@ -70,23 +70,6 @@ if (c == NULL){
     }
 }
 
-/*
-public AlbumNode getAlbum(AlbumNode root, String name) {
-    AlbumNode result;
-    if(root.getName().equals(name)){
-      return root;
-    }
-    if (root != null) {
-        if(root.left != null) result = getAlbum(root.left, name);
-        if(result != null) {
-            return result;
-        } 
-        if(root.right != null) result = getAlbum(root.right, name);
-    }
-    return result;
-}
-*/
-
 /*this function will return the node that the name that we enter bilong to*/
 node* Tree:: findnode(string name ,node *temp){
     node *current;
@@ -210,10 +193,9 @@ int main(){
    T.addFather("Yosef", "Yaakov");
    T.addMother("Yosef", "NIII");
     T.addMother("NIII", "yiiysa");
-
   //     T.display();
    // T.remove("Yosef");
     T.display();
     cout<<" "<<endl;
-    //cout<< T.find("grandmother");
+    cout<< T.find("grandmother");
 }
