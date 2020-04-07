@@ -31,6 +31,7 @@ class Tree{
     void remove(string name);
     void display();
     node* findnode(string name, node *root);
+    node* remove_all_parents(node *root);
 };
 
 void Tree::addFather(string name , string father){
@@ -39,6 +40,9 @@ if (c == NULL){
     return;
 }
     else{
+        if(root->father!=NULL){
+            throw std::out_of_range{" This person already have a father"};
+        }
         node *p=new node();
         p->name=father;
         p->father=NULL;
@@ -54,6 +58,9 @@ node *c=findnode(name ,root);
 if (c == NULL){
     return;
 }
+ if(root->mother!=NULL){
+            throw std::out_of_range{" This person already have a mother"};
+        }
     else{
         node *p=new node();
         p->name=mother;
@@ -77,7 +84,46 @@ node* Tree:: findnode(string name ,node *root){
     if (root->mother != NULL) {
      return findnode(name, root->mother);
     }
+    return NULL;
 }
+
+/*this function will remove the person that the name of him we entered and all his parents*/
+void Tree :: remove(string name){
+node *tmp=findnode(name, root);
+    if(tmp->father!=NULL){
+    remove_all_parents(root);
+    }
+
+
+}
+
+/*this function will remove all the fathers of this node*/
+node* Tree::remove_all_parents(node *root){
+   if(root==NULL){
+       return root;
+   }
+   if(root->father!=NULL){
+        remove_all_parents(root->father);
+   }
+   else if(root->mother!=NULL){
+        remove_all_parents(root->mother);
+   }
+   else{
+       if(root->father==NULL){
+           node *tmp=root->mother;
+           root=NULL;
+           return tmp;
+       }
+       else if(root->mother==NULL){
+           node *tmp=root->father;
+           root=NULL;
+           return tmp;
+       }
+   }
+   return root;
+
+}
+
 
 void Tree:: display(){
 cout << root ->father->name << "\n"  << root ->mother->name  << "\n"  << root -> name;
@@ -89,5 +135,6 @@ int main(){
     Tree T ("Yosef");
    T.addFather("Yosef", "Yaakov");
    T.addMother("Yosef", "NIII");
+       T.display();
     T.display();
 }
