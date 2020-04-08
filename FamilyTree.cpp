@@ -20,10 +20,19 @@ if (c == NULL){
         p->father=NULL;
         p->mother=NULL;
         c->father=p;
+        if((c->rel).compare("child") ==0) p->rel = "father";
+        else if((c->rel).compare("father") ==0) p->rel = "grandfather";
+        else if((c->rel).compare("mother") ==0) p->rel = "grandfather";
+        else if((c->rel).compare("grandfather") ==0) p->rel = "great-grandfather";
+        else if((c->rel).compare("grandmother") ==0) p->rel = "great-grandfather";
+        else {
+            string t ="great-"+ c->rel;
+            for (int i = 0; i < 6; i++) t.pop_back();
+            t=t+"father";
+            p->rel=t;
+        }
     }
 }
-
-
 
 Tree &Tree::addMother(string name , string mother){
 Tree *c=findTree(name ,root);
@@ -39,6 +48,17 @@ if (c == NULL){
         p->father=NULL;
         p->mother=NULL;
         c->mother=p;
+        if((c->rel).compare("child") ==0) p->rel = "mother";
+        else if((c->rel).compare("mother") ==0) p->rel = "grandmother";
+        else if((c->rel).compare("father") ==0) p->rel = "grandmother";
+         else if((c->rel).compare("grandfather") ==0) p->rel = "great-grandmother";
+        else if((c->rel).compare("grandmother") ==0) p->rel = "great-grandmother";
+         else {
+            string t ="great-"+ c->rel;
+            for (int i = 0; i < 6; i++) t.pop_back();
+            t=t+"mother";
+            p->rel=t;
+        }
     }
 }
 
@@ -167,6 +187,11 @@ string Tree:: find(string s){
 
 }
 
+string Tree:: relation (string relat){
+      Tree *c =  findTree(relat , root);
+    return c->rel;
+}
+
 
 void Tree:: display(){
 cout << root ->father->name << "\n"  << root ->mother->name  << "\n"  << root -> name;
@@ -185,5 +210,6 @@ int main(){
    // T.remove("Yosef");
     T.display();
     cout<<" "<<endl;
-    cout<< T.find("grandmother");
+    cout<< T.find("grandmother") << endl;
+    cout << T.relation("yiiysa");
 }

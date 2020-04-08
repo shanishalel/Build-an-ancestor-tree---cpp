@@ -4,14 +4,6 @@
 
 using namespace std;
 
-/*
-struct node{
-    node *father;
-    node *mother;
-    string name;
-};
-*/
-
 namespace family{
 class Tree{
     public:
@@ -19,6 +11,7 @@ class Tree{
     Tree *father;
     Tree *mother;
     string name;
+    string rel;
 
     public:
     Tree(){
@@ -27,12 +20,13 @@ class Tree{
     Tree(string name){
         root=new Tree;
         root->name=name;
+        root->rel="child";
         root->father=NULL;
         root->mother=NULL;
     }
     Tree &addFather ( string name,string father);
     Tree &addMother ( string name,string Mother);
-    string relation (string rel);
+    string relation (string relat);
     string find(string rel);
     void remove(string name);
     void display();
@@ -41,11 +35,3 @@ class Tree{
 };
 
 };
-/*
-void addFather (string name,string father);
-void addMother (string name,string Mother);
-string relation (string rel);
-string find(string rel);
-void remove(string name);
-void display();
-*/
