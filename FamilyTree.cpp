@@ -4,46 +4,18 @@
 #include "FamilyTree.hpp"
 
 using namespace std;
+using namespace family;
 
-struct node{
-    node *father;
-    node *mother;
-    string name;
-};
-
-class Tree{
-    public:
-    node *root;
-    Tree(){
-        root =NULL;
-    }
-    Tree(string name){
-        root=new node;
-        root->name=name;
-        root->father=NULL;
-        root->mother=NULL;
-
-    }
-    void addFather ( string name,string father);
-    void addMother ( string name,string Mother);
-    string relation (string rel);
-    string find(string rel);
-    void remove(string name);
-    void display();
-    node* findnode(string name, node *root);
-    node* remove_all_parents(node *root);
-};
-
-void Tree::addFather(string name , string father){
-node *c=findnode(name ,root);
+Tree &Tree::addFather(string name , string father){
+Tree *c=findTree(name ,root);
 if (c == NULL){
-    return;
+    throw runtime_error(name+" is not in the tree");
 }
     else{
         if(c->father!=NULL){
             throw std::out_of_range{" This person already have a father"};
         }
-        node *p=new node();
+        Tree *p=new Tree();
         p->name=father;
         p->father=NULL;
         p->mother=NULL;
@@ -53,16 +25,16 @@ if (c == NULL){
 
 
 
-void Tree::addMother(string name , string mother){
-node *c=findnode(name ,root);
+Tree &Tree::addMother(string name , string mother){
+Tree *c=findTree(name ,root);
 if (c == NULL){
-    return;
+    throw runtime_error(name+" is not in the tree");
 }
  if(c->mother!=NULL){
             throw std::out_of_range{" This person already have a mother"};
         }
     else{
-        node *p=new node();
+        Tree *p=new Tree();
         p->name=mother;
         p->father=NULL;
         p->mother=NULL;
@@ -70,15 +42,15 @@ if (c == NULL){
     }
 }
 
-/*this function will return the node that the name that we enter bilong to*/
-node* Tree:: findnode(string name ,node *temp){
-    node *current;
+/*this function will return the Tree that the name that we enter bilong to*/
+Tree* Tree:: findTree(string name ,Tree *temp){
+    Tree *current;
     if ((temp->name).compare(name) ==0 ){
         return temp;
     }
     if ( temp != NULL){
-        if (temp->father != NULL ) current = findnode(name , temp->father);
-        if (temp->mother != NULL) current = findnode(name , temp->mother);
+        if (temp->father != NULL ) current = findTree(name , temp->father);
+        if (temp->mother != NULL) current = findTree(name , temp->mother);
         if (current != NULL){
             return current;
         }
@@ -88,15 +60,15 @@ node* Tree:: findnode(string name ,node *temp){
 
 /*this function will remove the person that the name of him we entered and all his parents*/
 void Tree :: remove(string name){
-node *tmp=findnode(name, root);
+Tree *tmp=findTree(name, root);
     if(tmp->father!=NULL){
     remove_all_parents(root);
     }
     delete(tmp);
 }
 
-/*this function will remove all the fathers of this node*/
-node* Tree::remove_all_parents(node *root){
+/*this function will remove all the fathers of this Tree*/
+Tree* Tree::remove_all_parents(Tree *root){
    if(root==NULL){
        return root;
    }
@@ -108,12 +80,12 @@ node* Tree::remove_all_parents(node *root){
    }
    else{
        if(root->father==NULL){
-           node *tmp=root->mother;
+           Tree *tmp=root->mother;
            delete(root);
            return tmp;
        }
        else if(root->mother==NULL){
-           node *tmp=root->father;
+           Tree *tmp=root->father;
            delete(root);
            return tmp;
        }
@@ -128,7 +100,8 @@ string Tree:: find(string s){
     }
     string temp="";
     int x=0,i=0;
-    node *temp_root = root;
+    Tree *left_root = root;
+    Tree *right_root = root;
     if (s.compare("father")==0){
         return root->father->name;
     }
@@ -164,15 +137,30 @@ string Tree:: find(string s){
          throw std::out_of_range{"This is not valid"};
     }
     else{
-        while ( x != 0){
-            temp_root = temp_root->mother;
-            x--;
+        int z=x;
+        while ( z != 0){
+            left_root = left_root->mother;
+            right_root = right_root->father;
+            z--;
         }
         if(temp.compare("grandmother")==0){
-            return temp_root->mother->name;
+
+            if ((left_root->mother->name).compare(NULL) != 0 ){
+            return left_root->mother->name;
+            }
+            else if ((right_root->mother->name).compare(NULL)!=0 ){
+                return right_root->mother->name;
+            }
+            else   throw std::out_of_range{"No have this person"};
         }
         else if (temp.compare("grandfather")==0){
-                return temp_root->father->name;
+                if ((left_root->father->name).compare(NULL) != 0){
+            return left_root->father->name;
+            }
+            else if ((right_root->father->name).compare(NULL)!=0){
+                return right_root->father->name;
+            }
+            else   throw std::out_of_range{"No have this person"};
             }
         }
     }
@@ -182,7 +170,7 @@ string Tree:: find(string s){
 
 void Tree:: display(){
 cout << root ->father->name << "\n"  << root ->mother->name  << "\n"  << root -> name;
-node *temp = root->mother;
+Tree *temp = root->mother;
 cout << endl << temp->mother->name;
 }
 
