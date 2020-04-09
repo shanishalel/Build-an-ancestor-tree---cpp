@@ -1,3 +1,4 @@
+#pragma once
 #include <stdlib.h>
 #include <iostream>
 #include <string.h>
@@ -16,14 +17,21 @@ class Tree{
     public:
     Tree(){
         root =NULL;
-    }
+        father=NULL;
+        mother=NULL;
+    };
+    ~Tree(){        
+      if(father!=NULL) delete(father);
+      if(mother!=NULL) delete(mother);      
+    };
     Tree(string name){
         root=new Tree;
         root->name=name;
         root->rel="child";
         root->father=NULL;
         root->mother=NULL;
-    }
+    };
+    
     Tree &addFather ( string name,string father);
     Tree &addMother ( string name,string Mother);
     string relation (string relat);
@@ -31,7 +39,9 @@ class Tree{
     void remove(string name);
     void display();
     Tree* findTree(string name, Tree *root);
-    Tree* remove_all_parents(Tree *root);
+    void remove_all_parents(Tree *root);
+    void print_all_rel(Tree *c);
+
 };
 
 };
