@@ -1,1 +1,1 @@
-    // cout<< T.find("grandmother") << endl;
+     //cout<<T.relation("shani")<<endl;

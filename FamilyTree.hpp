@@ -8,7 +8,7 @@ using namespace std;
 namespace family{
 class Tree{
     public:
-    Tree *root;
+    Tree *child;
     Tree *father;
     Tree *mother;
     string name;
@@ -16,20 +16,20 @@ class Tree{
 
     public:
     Tree(){
-        root =NULL;
+        child =NULL;
         father=NULL;
         mother=NULL;
     };
-    ~Tree(){        
-      if(father!=NULL) delete(father);
-      if(mother!=NULL) delete(mother);      
+    Tree(string n){
+        name=n;
+        rel="me";
+        father=NULL;
+        mother=NULL;
+        child=NULL;
     };
-    Tree(string name){
-        root=new Tree;
-        root->name=name;
-        root->rel="child";
-        root->father=NULL;
-        root->mother=NULL;
+    ~Tree(){        
+      if(father) {delete(father); }
+      if(mother){delete(mother);}       
     };
     
     Tree &addFather ( string name,string father);
