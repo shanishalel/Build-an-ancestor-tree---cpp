@@ -7,7 +7,7 @@
 using namespace std;
 using namespace family;
 
-TEST_CASE("v and w")
+TEST_CASE("Tree build")
 {
     family::Tree T ("Yosef"); // Yosef is the "root" of the tree (the youngest person).
 	T.addFather("Yosef", "Yaakov")   // Tells the tree that the father of Yosef is Yaakov.
@@ -16,15 +16,6 @@ TEST_CASE("v and w")
 	 .addMother("Yaakov", "Rivka")
 	 .addFather("Isaac", "Avraham")
 	 .addFather("Avraham", "Terah");
-
-    cout << T.relation("Yaakov") << endl;  // prints "father"
-	cout << T.relation("Rachel") << endl;  // prints "mother"
-	cout << T.relation("Rivka") << endl;  // prints "grandmother"
-	cout << T.relation("Avraham") << endl;  // prints "great-grandfather"
-	cout << T.relation("Terah") << endl;  // prints "great-great-grandfather"
-	cout << T.relation("xyz") << endl;  // prints "unrelated"
-	cout << T.relation("Yosef") << endl;  // prints "me"
-
 
     CHECK(T.relation("Yaakov").compare("father") == 0 );
     CHECK(T.relation("Rachel").compare("mother") == 0 );
@@ -37,8 +28,12 @@ TEST_CASE("v and w")
 
     CHECK(T.find("mother").compare("Rachel") == 0 );
     CHECK(T.find("great-great-grandfather").compare("Terah") == 0 );
-    //This is not valid
+	CHECK(T.find("grandmother").compare("Rivka") == 0 );
+    CHECK(T.find("great-grandfather").compare("Avraham") == 0 );
 
+	T.remove("Terah");
+	CHECK(T.relation("Terah").compare("unrelated") == 0 );
+    
 
 
 	try {
