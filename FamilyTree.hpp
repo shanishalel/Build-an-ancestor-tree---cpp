@@ -39,8 +39,10 @@ class Tree{
     void remove(string name);
     void display();
     Tree* findTree(string name, Tree *root);
+    Tree* findTreerel(string s ,Tree *temp);
     void remove_all_parents(Tree *root);
     void print_all_rel(Tree *c);
+
 
 };
 

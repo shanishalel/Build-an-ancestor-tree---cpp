@@ -88,7 +88,15 @@ if (c == NULL){
 /*this function will remove the person that the name of him we entered and all his parents*/
 void Tree :: remove(string name){
 Tree *tmp=findTree(name, this);
-    if(tmp!=nullptr){
+    if ( tmp == this){
+        if (this->father != NULL){
+            this->father =NULL;
+        }
+        if (this->mother != NULL){
+            this->mother =NULL;
+        }
+    }
+    else if(tmp!=nullptr){
         if (tmp->child->father != NULL){
         if((tmp->child->father->name).compare(name) ==0){
             tmp->child->father=NULL;
@@ -104,83 +112,34 @@ Tree *tmp=findTree(name, this);
 }
     
 
+Tree* Tree:: findTreerel(string s ,Tree *temp){
+    Tree *current= NULL;
+    if ((temp->rel).compare(s) ==0 ){
+        return temp;
+    }
+    if ( temp != NULL){
+        if (temp->father != NULL ) current = findTreerel(s , temp->father);
+        if (current != NULL && (current->rel).compare(s)==0){
+            return current;
+        }
+        if (temp->mother != NULL) current = findTreerel(s , temp->mother);
+        if (current != NULL){
+            return current;
+        }
+    }
+    return current;
+}
 
 string Tree:: find(string s){
-    if (s.size() < 5){
+Tree *tmp=findTreerel(s, this);
+if ( tmp == NULL){
     throw std::out_of_range{"This is not valid"};
-    }
-    string temp="";
-    int x=0,i=0;
-    Tree *left_root = this;
-    Tree *right_root = this;
-    if (s.compare("father")==0){
-        return this->father->name;
-    }
-    else if (s.compare("mother")==0){
-        return this->mother->name;
-    }
-    else if (s.compare("grandfather")==0){
-        return this->father->father->name;
-    }
-    else if (s.compare("grandmother")==0){
-        return this->mother->mother->name;
-    }
-    else{
-        while (i < s.size()){
-        while ( i < s.size() && (s.at(i) >= 97 && s.at(i) <= 122) ){
-            temp = temp+ s.at(i);
-            i++;
-        }
-        if (temp.compare("great")==0){
-            x++;
-            temp="";
-        }
-        else if (temp.compare("grandmother")==0 || temp.compare("grandfather")==0){
-            i++;
-            break;
-        }
-        else{
-             throw std::out_of_range{"This is not valid"};
-        }
-        i++;
-    }
-    if (i-1 != s.size()){
-         throw std::out_of_range{"This is not valid"};
-    }
-    else{
-        int z=x;
-        while ( z >= 0){
-            if (left_root->mother != NULL){
-            left_root = left_root->mother;
-            }
-            if(right_root->father != NULL){
-            right_root = right_root->father;
-            }
-            z--;
-        }
-        if(temp.compare("grandmother")==0){
-
-            if (left_root->mother != NULL ){
-            return left_root->mother->name;
-            }
-            else if (right_root->mother!= NULL ){
-                return right_root->mother->name;
-            }
-            else   throw std::out_of_range{"No have this person"};
-        }
-        else if (temp.compare("grandfather")==0){
-                if (left_root->father != NULL){
-            return left_root->father->name;
-            }
-            else if (right_root->father != NULL){
-                return right_root->father->name;
-            }
-            else   throw std::out_of_range{"No have this person"};
-            }
-        }
-    }
-    return "";
 }
+else {
+    return tmp->name;
+}
+}
+
 
 /*this function will return the relation of the name that we entered if there isn't relation
 she will retunr unrelated*/
@@ -215,42 +174,3 @@ void Tree:: display(){
 print_all_rel(this);
 
 }
-
- 
-
-/*
-int main() {
-	family::Tree T ("Yosef"); // Yosef is the "root" of the tree (the youngest person).
-	T.addFather("Yosef", "Yaakov")   // Tells the tree that the father of Yosef is Yaakov.
-	 .addMother("Yosef", "Rachel")   // Tells the tree that the mother of Yosef is Rachel.
-	 .addFather("Yaakov", "Isaac")
-	 .addMother("Yaakov", "Rivka")
-	 .addFather("Isaac", "Avraham")
-	 .addFather("Avraham", "Terah");
-
-	T.display();                        // displays the tree in a human-friendly format.
-
-
-	cout << T.relation("Yaakov") << endl;  // prints "father"
-	cout << T.relation("Rachel") << endl;  // prints "mother"
-	cout << T.relation("Rivka") << endl;  // prints "grandmother"
-	cout << T.relation("Avraham") << endl;  // prints "great-grandfather"
-	cout << T.relation("Terah") << endl;  // prints "great-great-grandfather"
-	cout << T.relation("xyz") << endl;  // prints "unrelated"
-	cout << T.relation("Yosef") << endl;  // prints "me"
-
-    cout << T.find("mother") << endl;  // prints "Rachel"
-	cout << T.find("great-great-grandfather") << endl;  // prints "Terah"
-
-	try {
-		cout << T.find("uncle") << endl;  // throws an exception
-	} catch (const exception& ex) {
-	 	cout << ex.what() << endl;  // prints "The tree cannot handle the 'uncle' relation"
-	}
-
-	T.remove("Avraham"); // removes Avraham and Terah
-	cout << T.relation("Terah") << endl;  // prints "unrelated"
-    T.display();
-    return 0;
-}
-*/
