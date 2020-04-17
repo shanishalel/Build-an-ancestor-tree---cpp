@@ -4,8 +4,7 @@
 #include "doctest.h"
 #include <iostream>
 #include <stdexcept>
-using namespace std;
-using namespace family;
+
 
 TEST_CASE("Tree build")
 {
