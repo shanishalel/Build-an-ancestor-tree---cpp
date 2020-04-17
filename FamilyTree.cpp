@@ -52,7 +52,7 @@ if (c == NULL){
             p->rel=t;
         }
     }
-    return *c;
+    return *this;
 }
 
 Tree &Tree::addMother(string name , string mother){
@@ -82,19 +82,14 @@ if (c == NULL){
             p->rel=t;
         }
     }
-    return *c;
+    return *this;
 }
 
 /*this function will remove the person that the name of him we entered and all his parents*/
 void Tree :: remove(string name){
 Tree *tmp=findTree(name, this);
-    if ( tmp == this){
-        if (this->father != NULL){
-            this->father =NULL;
-        }
-        if (this->mother != NULL){
-            this->mother =NULL;
-        }
+    if ( tmp == this || tmp == NULL){
+         throw std::out_of_range{"You cant delete the root"};
     }
     else if(tmp!=nullptr){
         if (tmp->child->father != NULL){
@@ -174,3 +169,4 @@ void Tree:: display(){
 print_all_rel(this);
 
 }
+
