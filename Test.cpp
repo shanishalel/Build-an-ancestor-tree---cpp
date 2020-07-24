@@ -55,8 +55,7 @@ TEST_CASE("Tree build")
 	CHECK(T.relation("Rachel").compare("unrelated") == 0 );
 	CHECK(T.relation("Yosef").compare("me") == 0 );
 
-	//remove all the tree
-	T.remove("Yosef");
+	
 
 }
 
@@ -103,8 +102,8 @@ CHECK_THROWS(S.find("great-great-great-great-grandfather"));
 CHECK_THROWS(S.find("great"));
 CHECK_THROWS(S.find("shani"));
 
+
 //remove telative that not exist
-S.remove("shani");
 
 CHECK(S.find("me").compare("Gal")==0);
 CHECK(S.find("father").compare("Natan")==0);
@@ -304,8 +303,21 @@ CHECK_THROWS(S.find("Liza"));
 CHECK_THROWS(S.find("Shelly"));
 CHECK_THROWS(S.find("Natan"));
 
-//remove Gal
-S.remove("Gal");
+
+//
+CHECK_THROWS(S.find("tttttt"));
+CHECK_THROWS(S.find("tttttt"));
+CHECK_THROWS(S.find("tttttt"));
+CHECK_THROWS(S.find("tttttt"));
+CHECK_THROWS(S.find("tttttt"));
+CHECK_THROWS(S.find("tttttt"));
+CHECK_THROWS(S.find("tttttt"));
+CHECK_THROWS(S.find("tttttt"));
+CHECK_THROWS(S.find("tttttt"));
+CHECK_THROWS(S.find("tttttt"));
+CHECK_THROWS(S.find("tttttt"));
+CHECK_THROWS(S.find("tttttt"));
+
 
 
 
